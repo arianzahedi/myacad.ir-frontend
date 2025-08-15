@@ -1,7 +1,8 @@
 // postcss.config.mjs
+/** @type {import('postcss-load-config').Config} */
 const config = {
   plugins: {
-    tailwindcss: {},
+    '@tailwindcss/postcss': {}, // <--- تغییر کلیدی و نهایی اینجاست
     autoprefixer: {},
   },
 };
