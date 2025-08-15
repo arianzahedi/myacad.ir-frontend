@@ -1,4 +1,4 @@
-// src/app/page.tsx - Updated with Morphing Animations
+// src/app/page.tsx
 'use client';
 
 import { useState, useRef } from 'react';
@@ -18,7 +18,6 @@ export default function HomePage() {
   const modalRef = useRef<HTMLDivElement>(null);
   const modalContentRef = useRef<HTMLDivElement>(null);
   
-  // Refs for the navigation icons
   const navButtonRef = useRef<HTMLButtonElement>(null);
   const closeIconRef = useRef<HTMLDivElement>(null);
   const backIconRef = useRef<HTMLDivElement>(null);
@@ -26,7 +25,22 @@ export default function HomePage() {
   useGSAP(() => {
     // --- Modal Expansion Animation ---
     const animateModal = (originRef: React.RefObject<HTMLDivElement>) => {
-      // ... (This logic is the same as before)
+      if (!originRef.current || !modalRef.current || !modalContentRef.current) return;
+      
+      const originRect = originRef.current.getBoundingClientRect();
+      const tl = gsap.timeline();
+      
+      tl.set(modalRef.current, {
+          top: originRect.top, left: originRect.left,
+          width: originRect.width, height: originRect.height,
+          borderRadius: "12px",
+        })
+        .to(modalRef.current, {
+          duration: 0.7, autoAlpha: 1, top: 0, left: 0,
+          width: '100vw', height: '100vh',
+          borderRadius: "0px", ease: 'expo.inOut',
+        })
+        .to(modalContentRef.current, { duration: 0.5, autoAlpha: 1 }, "-=0.2");
     };
     
     if (view === 'signup' || view === 'login') {
@@ -38,7 +52,6 @@ export default function HomePage() {
     const isFirstStep = view === 'login' || view === 'signup';
     const isSecondStepOrLater = view === 'confirm_experience' || view === 'enter_name';
     
-    // 1. Animate the button container's appearance/disappearance
     gsap.to(navButtonRef.current, { 
       duration: 0.5, 
       autoAlpha: isModalOpen ? 1 : 0, 
@@ -46,7 +59,6 @@ export default function HomePage() {
       ease: 'power2.out' 
     });
     
-    // 2. Animate the morph between Close (X) and Back (<-) icons
     gsap.to(closeIconRef.current, { 
       duration: 0.3, 
       autoAlpha: isFirstStep ? 1 : 0, 
@@ -64,20 +76,23 @@ export default function HomePage() {
   }, { dependencies: [view] });
 
   const handleClose = () => {
-    // ... (This logic is the same as before)
+    gsap.to(modalContentRef.current, { duration: 0.3, autoAlpha: 0 });
+    gsap.to(modalRef.current, { 
+      duration: 0.5, autoAlpha: 0, onComplete: () => setView('initial')
+    });
   };
 
   const getPreviousView = (): View => {
-    if (view === 'enter_name') return 'confirm_experience';
-    if (view === 'confirm_experience') return 'signup';
-    return 'initial';
+      if (view === 'enter_name') return 'confirm_experience';
+      if (view === 'confirm_experience') return 'signup';
+      return 'initial';
   };
 
   const handleNavClick = () => {
     if (view === 'login' || view === 'signup') {
-      handleClose(); // In the first step, the button closes the modal
+      handleClose();
     } else {
-      setView(getPreviousView()); // In other steps, it goes back
+      setView(getPreviousView());
     }
   };
   
@@ -86,23 +101,62 @@ export default function HomePage() {
       {/* --- Initial View --- */}
       <div className={styles.initialView}>
         <div ref={signupButtonRef} onClick={() => setView('signup')} className={styles.rectButton}>
-          <FaUserPlus size={40} /> <span>ثبت‌نام</span>
+          <FaUserPlus size={40} />
+          <span>ثبت‌نام</span>
         </div>
         <div ref={loginButtonRef} onClick={() => setView('login')} className={styles.rectButton}>
-          <FaLock size={40} /> <span>ورود</span>
+          <FaLock size={40} />
+          <span>ورود</span>
         </div>
       </div>
       
       {/* --- The Expanding Modal Container --- */}
       <div ref={modalRef} className={styles.modalContainer}>
-        {/* The new single navigation button */}
         <button ref={navButtonRef} onClick={handleNavClick} className={styles.navButton}>
           <div ref={closeIconRef}><IoClose size={32} /></div>
           <div ref={backIconRef}><IoArrowBack size={32} /></div>
         </button>
 
         <div ref={modalContentRef} className={styles.modalContent}>
-          {/* ... All the form content is the same as before ... */}
+          
+          {/* Login Content */}
+          {view === 'login' && (
+            <div className={styles.form}>
+              <h2 className={styles.title}>ورود به حساب کاربری</h2>
+              <input type="text" placeholder="نام کاربری" className={styles.inputField} />
+              <input type="password" placeholder="کلمه عبور" className={styles.inputField} />
+              <button className={styles.button}>ورود</button>
+            </div>
+          )}
+
+          {/* Signup Content */}
+          {view === 'signup' && (
+            <div className={styles.form}>
+              <h2 className={styles.title}>ایجاد حساب کاربری</h2>
+              <input type="text" placeholder="نام کاربری" className={styles.inputField} />
+              <input type="password" placeholder="کلمه عبور" className={styles.inputField} />
+              <button onClick={() => setView('confirm_experience')} className={styles.button}>ادامه</button>
+            </div>
+          )}
+          
+          {/* Confirm Experience Content */}
+          {view === 'confirm_experience' && (
+            <div className={styles.form}>
+              <h2 className={styles.title}>آماده‌ای تا با هم یک تجربه جدید خلق کنیم؟</h2>
+              <button onClick={() => setView('enter_name')} className={`${styles.button} flex items-center justify-center gap-3 text-2xl w-auto px-8`}>
+                  بریم <FaArrowRight />
+              </button>
+            </div>
+          )}
+          
+          {/* Enter Name Content */}
+          {view === 'enter_name' && (
+            <div className={styles.form}>
+              <h2 className={styles.title}>نام و نام خانوادگی خود را وارد کنید</h2>
+              <input type="text" placeholder="مثال: ایلان ماسک" className={styles.inputField} />
+              <button className={styles.button}>ادامه</button>
+            </div>
+          )}
         </div>
       </div>
     </main>
