@@ -1,54 +1,63 @@
-/* src/app/HomePage.module.css - Updated */
+/* src/app/HomePage.module.css - Simplified & Corrected */
 
-/* ... .container, .initialView, .rectButton ... (these are the same) */
-.container { position: relative; display: flex; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; background-color: #0A192F; color: #FFFFFF; padding: 2rem; overflow: hidden; }
-.initialView { display: flex; gap: 2rem; align-items: center; justify-content: center; }
-.rectButton { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; width: 12rem; height: 12rem; border: 2px solid #475569; border-radius: 12px; cursor: pointer; color: #D1D5DB; transition: all 0.3s ease-in-out; }
-.rectButton:hover { border-color: #BF953F; transform: translateY(-5px); color: #BF953F; }
-
-/* ... .modalContainer, .modalContent ... (these are the same) */
-.modalContainer { position: fixed; display: flex; align-items: center; justify-content: center; background-color: #0A192F; border-radius: 12px; visibility: hidden; opacity: 0; z-index: 50; overflow: hidden; }
-.modalContent { opacity: 0; visibility: hidden; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-
-/* --- NEW STYLES START HERE --- */
-.navButton {
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 60;
-  width: 32px;
-  height: 32px;
-  opacity: 0; /* Initially hidden, will be animated by GSAP */
-  visibility: hidden;
+.container {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #0A192F;
+  color: #FFFFFF;
+  padding: 2rem;
+  overflow: hidden;
 }
 
-.navButton svg {
-  position: absolute; /* Stack icons on top of each other */
+/* This is a container for each step/view of the form */
+.viewContainer {
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --- Navigation Buttons --- */
+.navButton {
+  position: absolute;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
   color: #9CA3AF; /* gray-400 */
   transition: color 0.2s ease-in-out;
 }
-
-.navButton:hover svg {
+.navButton:hover {
   color: #FFFFFF;
 }
 
-.visibleNav {
-  opacity: 1;
-  visibility: visible;
-}
-/* --- NEW STYLES END HERE --- */
+.closeButton { top: 2rem; right: 2rem; }
+.backButton { top: 2rem; left: 2rem; display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; }
 
-/* ... .form, .title, .inputField, .button ... (these are the same) */
+/* --- Form and other elements --- */
 .form { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; text-align: center; }
 .title { font-size: 2.25rem; font-weight: 300; margin-bottom: 1rem; }
-.inputField { background-color: transparent; border: none; border-bottom: 2px solid #475569; text-align: center; font-size: 1.25rem; padding: 0.5rem; outline: none; transition: all 0.3s; width: 24rem; }
+.inputField { background: transparent; border: none; border-bottom: 2px solid #475569; text-align: center; font-size: 1.25rem; padding: 0.5rem; outline: none; transition: all 0.3s; width: 24rem; }
 .inputField:focus { border-color: #BF953F; transform: scale(1.05); }
 .button { margin-top: 1rem; color: #0A192F; font-weight: bold; padding: 0.75rem 1rem; border-radius: 8px; background-color: #BF953F; transition: opacity 0.3s; width: 24rem; border: none; cursor: pointer; }
 .button:hover { opacity: 0.9; }
