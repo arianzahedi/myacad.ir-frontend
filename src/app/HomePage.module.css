@@ -1,145 +1,49 @@
-/* src/app/HomePage.module.css */
+/* src/app/HomePage.module.css - Updated */
 
-.container {
-  position: relative;
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #0A192F;
-  color: #FFFFFF;
-  padding: 2rem;
-  overflow: hidden;
-}
+/* ... .container, .initialView, .rectButton ... (these are the same) */
+.container { position: relative; display: flex; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; background-color: #0A192F; color: #FFFFFF; padding: 2rem; overflow: hidden; }
+.initialView { display: flex; gap: 2rem; align-items: center; justify-content: center; }
+.rectButton { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; width: 12rem; height: 12rem; border: 2px solid #475569; border-radius: 12px; cursor: pointer; color: #D1D5DB; transition: all 0.3s ease-in-out; }
+.rectButton:hover { border-color: #BF953F; transform: translateY(-5px); color: #BF953F; }
 
-.initialView {
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-  justify-content: center;
-}
+/* ... .modalContainer, .modalContent ... (these are the same) */
+.modalContainer { position: fixed; display: flex; align-items: center; justify-content: center; background-color: #0A192F; border-radius: 12px; visibility: hidden; opacity: 0; z-index: 50; overflow: hidden; }
+.modalContent { opacity: 0; visibility: hidden; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
 
-.rectButton {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  width: 12rem;
-  height: 12rem;
-  border: 2px solid #475569; /* brand-gray */
-  border-radius: 12px;
-  cursor: pointer;
-  color: #D1D5DB; /* gray-300 */
-  transition: all 0.3s ease-in-out;
-}
-
-.rectButton:hover {
-  border-color: #BF953F; /* brand-gold */
-  transform: translateY(-5px);
-  color: #BF953F;
-}
-
-.modalContainer {
-  position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #0A192F;
-  border-radius: 12px;
-  visibility: hidden; /* Initially hidden */
-  opacity: 0;
-  z-index: 50;
-  overflow: hidden;
-}
-
-.modalContent {
-  opacity: 0; /* Content is initially invisible */
-  visibility: hidden;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.closeButton {
+/* --- NEW STYLES START HERE --- */
+.navButton {
   position: absolute;
   top: 2rem;
-  right: 2rem;
+  left: 2rem;
   background: none;
   border: none;
   cursor: pointer;
-  color: #9CA3AF; /* gray-400 */
-  transition: all 0.2s ease-in-out;
   z-index: 60;
+  width: 32px;
+  height: 32px;
+  opacity: 0; /* Initially hidden, will be animated by GSAP */
+  visibility: hidden;
 }
 
-.backButton {
-    position: absolute;
-    top: 2.5rem;
-    left: 2rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-    color: #9CA3AF; /* gray-400 */
-    transition: all 0.2s ease-in-out;
-    z-index: 60;
+.navButton svg {
+  position: absolute; /* Stack icons on top of each other */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: #9CA3AF; /* gray-400 */
+  transition: color 0.2s ease-in-out;
 }
 
-.closeButton:hover, .backButton:hover {
+.navButton:hover svg {
   color: #FFFFFF;
 }
+/* --- NEW STYLES END HERE --- */
 
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  text-align: center;
-}
-
-.title { 
-  font-size: 2.25rem; /* text-4xl */
-  font-weight: 300; 
-  margin-bottom: 1rem; 
-}
-
-.inputField { 
-  background-color: transparent; 
-  border: none; 
-  border-bottom: 2px solid #475569; 
-  text-align: center; 
-  font-size: 1.25rem; 
-  padding: 0.5rem; 
-  outline: none; 
-  transition: all 0.3s; 
-  width: 24rem; /* w-96 */
-}
-
-.inputField:focus { 
-  border-color: #BF953F; 
-  transform: scale(1.05);
-}
-
-.button { 
-  margin-top: 1rem; 
-  color: #0A192F; 
-  font-weight: bold; 
-  padding: 0.75rem 1rem; 
-  border-radius: 8px; 
-  background-color: #BF953F; 
-  transition: opacity 0.3s; 
-  width: 24rem; /* w-96 */
-  border: none;
-  cursor: pointer;
-}
-
-.button:hover { 
-  opacity: 0.9; 
-}
+/* ... .form, .title, .inputField, .button ... (these are the same) */
+.form { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; text-align: center; }
+.title { font-size: 2.25rem; font-weight: 300; margin-bottom: 1rem; }
+.inputField { background-color: transparent; border: none; border-bottom: 2px solid #475569; text-align: center; font-size: 1.25rem; padding: 0.5rem; outline: none; transition: all 0.3s; width: 24rem; }
+.inputField:focus { border-color: #BF953F; transform: scale(1.05); }
+.button { margin-top: 1rem; color: #0A192F; font-weight: bold; padding: 0.75rem 1rem; border-radius: 8px; background-color: #BF953F; transition: opacity 0.3s; width: 24rem; border: none; cursor: pointer; }
+.button:hover { opacity: 0.9; }
