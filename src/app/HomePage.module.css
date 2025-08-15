@@ -1,96 +1,43 @@
 /* src/app/HomePage.module.css */
 
 .container {
-  /* ... (کلاس کانتینر اصلی مانند قبل باقی می‌ماند) ... */
   position: relative;
   display: flex;
   min-height: 100vh;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #0A192F; /* brand-navy */
-  color: #FFFFFF; /* brand-white */
+  background-color: #0A192F; /* سرمه‌ای */
+  color: #FFFFFF;
   padding: 2rem;
   overflow: hidden;
-  font-family: var(--font-vazir), sans-serif;
 }
 
-.initialView {
+.iconGroup {
   display: flex;
-  gap: 2rem;
+  gap: 3rem;
   align-items: center;
-  justify-content: center;
 }
 
-.rectButton {
+.iconButton {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 1rem;
-  width: 12rem; /* 192px */
-  height: 12rem; /* 192px */
-  border: 2px solid #475569; /* brand-gray */
-  border-radius: 12px; /* ui-large */
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  color: #D1D5DB; /* خاکستری روشن */
 }
 
-.rectButton:hover {
-  border-color: #AE926B; /* brand-gold */
-  transform: translateY(-5px);
-  color: #AE926B;
+.iconButton div {
+  padding: 1.5rem;
+  border: 2px solid #FFFFFF;
+  border-radius: 9999px;
+  transition: all 0.3s;
 }
 
-.modalContainer {
-  position: fixed; /* Important for the animation */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #0A192F;
-  border-radius: 12px;
-  visibility: hidden; /* Initially hidden */
-  opacity: 0;
-  z-index: 50;
-  overflow: hidden;
+.iconButton:hover, .iconButton:hover div {
+  color: #BF953F; /* طلایی */
+  border-color: #BF953F;
 }
 
-.modalContent {
-  opacity: 0; /* Content is initially invisible */
-  visibility: hidden;
-}
-
-.closeButton, .backButton {
-  position: absolute;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #9CA3AF; /* gray-400 */
-  transition: all 0.2s ease-in-out;
-  z-index: 60;
-}
-
-.closeButton {
-  top: 2rem;
-  right: 2rem;
-}
-
-.backButton {
-  top: 2rem;
-  left: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-}
-
-.closeButton:hover, .backButton:hover {
-  color: #FFFFFF;
-}
-
-/* ... (کلاس‌های فرم مانند title, inputField, button مانند قبل باقی می‌مانند) ... */
-.title { font-size: 28px; font-weight: 300; letter-spacing: 0.1em; margin-bottom: 1rem; }
-.inputField { width: 20rem; background-color: transparent; border: none; border-bottom: 2px solid #475569; text-align: center; font-size: 1.125rem; padding: 0.5rem; outline: none; transition: all 0.3s; }
-.inputField:focus { border-color: #AE926B; }
-.button { width: 20rem; margin-top: 1rem; color: #0A192F; font-weight: bold; padding: 0.75rem 1rem; border-radius: 8px; background-color: #AE926B; transition: opacity 0.3s; }
-.button:hover { opacity: 0.9; }
+/* ... می‌توانید استایل‌های دیگر را اینجا اضافه کنید ... */
