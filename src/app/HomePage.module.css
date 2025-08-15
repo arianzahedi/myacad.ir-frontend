@@ -38,6 +38,11 @@
 .navButton:hover svg {
   color: #FFFFFF;
 }
+
+.visibleNav {
+  opacity: 1;
+  visibility: visible;
+}
 /* --- NEW STYLES END HERE --- */
 
 /* ... .form, .title, .inputField, .button ... (these are the same) */
