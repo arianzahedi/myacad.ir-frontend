@@ -1,7 +1,8 @@
 // src/app/page.tsx
 'use client';
 
-import { useState, useRef } from 'react';
+// Import MutableRefObject from React
+import { useState, useRef, MutableRefObject } from 'react';
 import { FaLock, FaUserPlus, FaArrowRight } from 'react-icons/fa';
 import { IoClose, IoArrowBack } from 'react-icons/io5';
 import { gsap } from 'gsap';
@@ -19,7 +20,8 @@ export default function HomePage() {
   const modalContentRef = useRef<HTMLDivElement>(null);
   
   useGSAP(() => {
-    const animate = (originRef: React.RefObject<HTMLDivElement>) => {
+    // THE FIX IS HERE: We specify the correct, more flexible type for the ref
+    const animate = (originRef: MutableRefObject<HTMLDivElement | null>) => {
       if (!originRef.current || !modalRef.current || !modalContentRef.current) return;
       
       const originRect = originRef.current.getBoundingClientRect();
@@ -59,7 +61,7 @@ export default function HomePage() {
   
   return (
     <main className={styles.container}>
-      {/* --- Initial View --- */}
+      {/* The rest of the JSX code remains exactly the same */}
       <div className={styles.initialView}>
         <div ref={signupButtonRef} onClick={() => setView('signup')} className={styles.rectButton}>
           <FaUserPlus size={40} />
@@ -70,63 +72,22 @@ export default function HomePage() {
           <span>ورود</span>
         </div>
       </div>
-      
-      {/* --- The Expanding Modal Container --- */}
       <div ref={modalRef} className={styles.modalContainer}>
-        {/* Close button is visible on the first step of the form */}
         {(view === 'login' || view === 'signup') && (
             <button onClick={handleClose} className={styles.closeButton}>
               <IoClose size={32} />
             </button>
         )}
-        
-        {/* Back button is visible from the second step onwards */}
         {(view === 'confirm_experience' || view === 'enter_name') && (
            <button onClick={() => setView(getPreviousView())} className={styles.backButton}>
             <IoArrowBack size={20} />
           </button>
         )}
-
         <div ref={modalContentRef} className={styles.modalContent}>
-          
-          {/* Login Content */}
-          {view === 'login' && (
-            <div className={styles.form}>
-              <h2 className={styles.title}>ورود به حساب کاربری</h2>
-              <input type="text" placeholder="نام کاربری" className={styles.inputField} />
-              <input type="password" placeholder="کلمه عبور" className={styles.inputField} />
-              <button className={styles.button}>ورود</button>
-            </div>
-          )}
-
-          {/* Signup Content */}
-          {view === 'signup' && (
-            <div className={styles.form}>
-              <h2 className={styles.title}>ایجاد حساب کاربری</h2>
-              <input type="text" placeholder="نام کاربری" className={styles.inputField} />
-              <input type="password" placeholder="کلمه عبور" className={styles.inputField} />
-              <button onClick={() => setView('confirm_experience')} className={styles.button}>ادامه</button>
-            </div>
-          )}
-          
-          {/* Confirm Experience Content */}
-          {view === 'confirm_experience' && (
-            <div className={styles.form}>
-              <h2 className={styles.title}>آماده‌ای تا با هم یک تجربه جدید خلق کنیم؟</h2>
-              <button onClick={() => setView('enter_name')} className={`${styles.button} w-auto px-8 flex items-center justify-center gap-3 text-2xl`}>
-                  بریم <FaArrowRight />
-              </button>
-            </div>
-          )}
-          
-          {/* Enter Name Content */}
-          {view === 'enter_name' && (
-            <div className={styles.form}>
-              <h2 className={styles.title}>نام و نام خانوادگی خود را وارد کنید</h2>
-              <input type="text" placeholder="مثال: ایلان ماسک" className={styles.inputField} />
-              <button className={styles.button}>ادامه</button>
-            </div>
-          )}
+          {view === 'login' && ( <div className={styles.form}><h2 className={styles.title}>ورود به حساب کاربری</h2><input type="text" placeholder="نام کاربری" className={styles.inputField} /><input type="password" placeholder="کلمه عبور" className={styles.inputField} /><button className={styles.button}>ورود</button></div> )}
+          {view === 'signup' && ( <div className={styles.form}><h2 className={styles.title}>ایجاد حساب کاربری</h2><input type="text" placeholder="نام کاربری" className={styles.inputField} /><input type="password" placeholder="کلمه عبور" className={styles.inputField} /><button onClick={() => setView('confirm_experience')} className={styles.button}>ادامه</button></div> )}
+          {view === 'confirm_experience' && ( <div className={styles.form}><h2 className={styles.title}>آماده‌ای تا با هم یک تجربه جدید خلق کنیم؟</h2><button onClick={() => setView('enter_name')} className={`${styles.button} w-auto px-8 flex items-center justify-center gap-3 text-2xl`}>بریم <FaArrowRight /></button></div> )}
+          {view === 'enter_name' && ( <div className={styles.form}><h2 className={styles.title}>نام و نام خانوادگی خود را وارد کنید</h2><input type="text" placeholder="مثال: ایلان ماسک" className={styles.inputField} /><button className={styles.button}>ادامه</button></div> )}
         </div>
       </div>
     </main>
