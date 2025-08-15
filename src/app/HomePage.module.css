@@ -1,6 +1,7 @@
 /* src/app/HomePage.module.css */
 
 .container {
+  /* ... (کلاس کانتینر اصلی مانند قبل باقی می‌ماند) ... */
   position: relative;
   display: flex;
   min-height: 100vh;
@@ -14,134 +15,82 @@
   font-family: var(--font-vazir), sans-serif;
 }
 
-.iconGroup {
-  position: absolute;
+.initialView {
   display: flex;
+  gap: 2rem;
   align-items: center;
   justify-content: center;
-  gap: 3rem;
-  transition: opacity 0.5s ease-in-out;
 }
 
-.iconButton {
+.rectButton {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
+  width: 12rem; /* 192px */
+  height: 12rem; /* 192px */
+  border: 2px solid #475569; /* brand-gray */
+  border-radius: 12px; /* ui-large */
   cursor: pointer;
-}
-
-.iconButton div {
-  padding: 1.5rem;
-  border: 2px solid #FFFFFF;
-  border-radius: 9999px;
-  transition: border-color 0.3s;
-}
-
-.iconButton span {
-  font-weight: 300;
-  letter-spacing: 0.1em;
-  color: #D1D5DB; /* gray-300 */
-  transition: color 0.3s;
-}
-
-.iconButton:hover div {
-  border-color: #AE926B; /* brand-gold */
-}
-
-.iconButton:hover span {
-  color: #AE926B; /* brand-gold */
-}
-
-.formContainer {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.title {
-  font-size: 28px; /* h2-lg */
-  font-weight: 300;
-  letter-spacing: 0.1em;
-  margin-bottom: 1rem;
-}
-
-.inputField {
-  width: 20rem; /* w-80 */
-  background-color: transparent;
-  border: none;
-  border-bottom: 2px solid #475569; /* brand-gray */
-  text-align: center;
-  font-size: 1.125rem;
-  padding: 0.5rem;
-  outline: none;
-  transition: all 0.3s;
-}
-
-.inputField:focus {
-  border-color: #AE926B; /* brand-gold */
-  transform: scale(1.05);
-}
-
-.button {
-  width: 20rem; /* w-80 */
-  margin-top: 1rem;
-  color: #0A192F; /* brand-navy */
-  font-weight: bold;
-  padding: 0.75rem 1rem;
-  border-radius: 8px; /* ui-default */
-  background-color: #AE926B; /* brand-gold */
   transition: all 0.3s ease-in-out;
 }
 
-.button:hover {
-  background-image: linear-gradient(to right, #FBBF24, #AE926B);
-  box-shadow: 0 10px 15px -3px rgba(251, 191, 36, 0.1), 0 4px 6px -2px rgba(251, 191, 36, 0.05);
+.rectButton:hover {
+  border-color: #AE926B; /* brand-gold */
+  transform: translateY(-5px);
+  color: #AE926B;
 }
 
-.visible {
-  opacity: 1;
-}
-
-.hidden {
+.modalContainer {
+  position: fixed; /* Important for the animation */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0A192F;
+  border-radius: 12px;
+  visibility: hidden; /* Initially hidden */
   opacity: 0;
-  pointer-events: none;
+  z-index: 50;
+  overflow: hidden;
 }
 
-/* Add these to the end of src/app/HomePage.module.css */
+.modalContent {
+  opacity: 0; /* Content is initially invisible */
+  visibility: hidden;
+}
 
-.closeButton {
+.closeButton, .backButton {
   position: absolute;
-  top: 2rem;
-  right: 2rem;
+  background: none;
+  border: none;
   cursor: pointer;
   color: #9CA3AF; /* gray-400 */
   transition: all 0.2s ease-in-out;
-  z-index: 10;
+  z-index: 60;
 }
 
-.closeButton:hover {
-  color: #FFFFFF; /* brand-white */
-  transform: scale(1.1);
+.closeButton {
+  top: 2rem;
+  right: 2rem;
 }
 
 .backButton {
-  position: absolute;
   top: 2rem;
   left: 2rem;
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  color: #9CA3AF; /* gray-400 */
-  transition: all 0.2s ease-in-out;
-  z-index: 10;
 }
 
-.backButton:hover {
-  color: #FFFFFF; /* brand-white */
+.closeButton:hover, .backButton:hover {
+  color: #FFFFFF;
 }
+
+/* ... (کلاس‌های فرم مانند title, inputField, button مانند قبل باقی می‌مانند) ... */
+.title { font-size: 28px; font-weight: 300; letter-spacing: 0.1em; margin-bottom: 1rem; }
+.inputField { width: 20rem; background-color: transparent; border: none; border-bottom: 2px solid #475569; text-align: center; font-size: 1.125rem; padding: 0.5rem; outline: none; transition: all 0.3s; }
+.inputField:focus { border-color: #AE926B; }
+.button { width: 20rem; margin-top: 1rem; color: #0A192F; font-weight: bold; padding: 0.75rem 1rem; border-radius: 8px; background-color: #AE926B; transition: opacity 0.3s; }
+.button:hover { opacity: 0.9; }

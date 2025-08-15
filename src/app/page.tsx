@@ -1,9 +1,9 @@
 // src/app/page.tsx
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, ReactNode } from 'react';
 import { FaLock, FaUserPlus, FaArrowRight } from 'react-icons/fa';
-import { IoClose, IoArrowBack } from 'react-icons/io5'; // New icons
+import { IoClose, IoArrowBack } from 'react-icons/io5';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './HomePage.module.css';
@@ -13,76 +13,109 @@ type View = 'initial' | 'login' | 'signup' | 'confirm_experience' | 'enter_name'
 export default function HomePage() {
   const [view, setView] = useState<View>('initial');
   
-  // A helper function to determine the previous step
-  const getPreviousView = () => {
-      if (view === 'enter_name') return 'confirm_experience';
-      if (view === 'confirm_experience') return 'signup';
-      // For the first steps, "back" takes you to the initial screen
-      if (view === 'login' || view === 'signup') return 'initial';
-      return 'initial';
-  }
-
-  // --- We are keeping the animation and other logic from before ---
-  const container = useRef(null);
+  // Refs for our initial buttons and the modal
+  const signupButtonRef = useRef<HTMLDivElement>(null);
+  const loginButtonRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const modalContentRef = useRef<HTMLDivElement>(null);
+  
   useGSAP(() => {
-    // ... (GSAP animation code remains the same)
-  }, { scope: container, dependencies: [view] });
+    // This is the animation logic
+    const animate = (originRef: React.RefObject<HTMLDivElement>) => {
+      if (!originRef.current || !modalRef.current || !modalContentRef.current) return;
+      
+      const originRect = originRef.current.getBoundingClientRect();
+      
+      // Animation timeline
+      const tl = gsap.timeline();
+      
+      tl.set(modalRef.current, {
+          top: originRect.top,
+          left: originRect.left,
+          width: originRect.width,
+          height: originRect.height,
+          borderRadius: "12px",
+        })
+        .to(modalRef.current, {
+          duration: 0.7,
+          autoAlpha: 1, // Fades in and becomes visible
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          borderRadius: "0px",
+          ease: 'expo.inOut',
+        })
+        .to(modalContentRef.current, {
+            duration: 0.5,
+            autoAlpha: 1, // Fade in the content AFTER the modal expands
+        }, "-=0.2"); // Start this animation 0.2s before the previous one ends
+    };
+    
+    // Trigger animations based on view change
+    if (view === 'signup') animate(signupButtonRef);
+    if (view === 'login') animate(loginButtonRef);
 
+  }, { dependencies: [view] });
+
+  const handleClose = () => {
+    // Animation to close the modal
+    gsap.to(modalContentRef.current, { duration: 0.3, autoAlpha: 0, ease: 'power2.in' });
+    gsap.to(modalRef.current, { 
+      duration: 0.5, 
+      autoAlpha: 0, 
+      ease: 'expo.in',
+      onComplete: () => setView('initial') // Set view to initial after animation completes
+    });
+  };
+
+  const getPreviousView = () => {
+    // ... same as before
+  };
+  
   return (
-    <main className={styles.container} ref={container}>
-      
-      {/* --- Close (X) Button --- */}
-      {/* This button is visible in any step except the initial one and always returns home */}
-      {view !== 'initial' && (
-        <button onClick={() => setView('initial')} className={styles.closeButton}>
-          <IoClose size={32} />
-        </button>
-      )}
-
-      {/* --- Back Button --- */}
-      {/* This button is also visible in any step except the initial one */}
-      {view !== 'initial' && (
-         <button onClick={() => setView(getPreviousView())} className={styles.backButton}>
-          <IoArrowBack size={20} />
-          <span>بازگشت</span>
-        </button>
-      )}
-      
+    <main className={styles.container}>
       {/* --- Initial View --- */}
-      <div className={`${styles.iconGroup} ${view === 'initial' ? styles.visible : styles.hidden}`}>
-        <div onClick={() => setView('signup')} className={styles.iconButton}>
-          <div><FaUserPlus size={40} /></div>
+      <div className={styles.initialView}>
+        <div ref={signupButtonRef} onClick={() => setView('signup')} className={styles.rectButton}>
+          <FaUserPlus size={40} />
           <span>ثبت‌نام</span>
         </div>
-        <div onClick={() => setView('login')} className={styles.iconButton}>
-          <div><FaLock size={40} /></div>
+        <div ref={loginButtonRef} onClick={() => setView('login')} className={styles.rectButton}>
+          <FaLock size={40} />
           <span>ورود</span>
         </div>
       </div>
+      
+      {/* --- The Expanding Modal Container --- */}
+      <div ref={modalRef} className={styles.modalContainer}>
+        {/* Close button is always visible inside the modal */}
+        <button onClick={handleClose} className={styles.closeButton}>
+          <IoClose size={32} />
+        </button>
+        {/* Back button is visible from the second step onwards */}
+        {(view === 'confirm_experience' || view === 'enter_name') && (
+           <button onClick={() => setView(getPreviousView())} className={styles.backButton}>
+            <IoArrowBack size={20} />
+            <span>بازگشت</span>
+          </button>
+        )}
 
-      {/* --- Sign Up View --- */}
-      <div className={`${styles.formContainer} ${view === 'signup' ? styles.visible : styles.hidden}`}>
-        <h2 className={`${styles.title} form-element`}>ایجاد حساب کاربری</h2>
-        <input type="text" placeholder="نام کاربری" className={`${styles.inputField} form-element`} />
-        <input type="password" placeholder="کلمه عبور" className={`${styles.inputField} form-element`} />
-        <button onClick={() => setView('confirm_experience')} className={`${styles.button} form-element`}>ادامه</button>
+        <div ref={modalContentRef} className={styles.modalContent}>
+          {/* We render the content based on the 'view' state */}
+          {view === 'signup' && (
+            <div className="flex flex-col items-center gap-6">
+              <h2 className={styles.title}>ایجاد حساب کاربری</h2>
+              <input type="text" placeholder="نام کاربری" className={styles.inputField} />
+              <input type="password" placeholder="کلمه عبور" className={styles.inputField} />
+              <button onClick={() => setView('confirm_experience')} className={styles.button}>ادامه</button>
+            </div>
+          )}
+          
+          {/* Add other views (login, confirm_experience, etc.) here in the same way */}
+          
+        </div>
       </div>
-
-      {/* --- Confirm Experience View --- */}
-      <div className={`${styles.formContainer} ${view === 'confirm_experience' ? styles.visible : styles.hidden}`}>
-         <h2 className={`${styles.title} text-4xl text-center confirm-element`}>آماده‌ای تا با هم یک تجربه جدید خلق کنیم؟</h2>
-         <button onClick={() => setView('enter_name')} className={`${styles.button} w-auto px-8 flex items-center gap-3 text-2xl confirm-element`}>
-            بریم <FaArrowRight />
-         </button>
-      </div>
-
-      {/* --- Enter Name View --- */}
-      <div className={`${styles.formContainer} ${view === 'enter_name' ? styles.visible : styles.hidden}`}>
-        <h2 className={`${styles.title} name-element`}>نام و نام خانوادگی خود را وارد کنید</h2>
-        <input type="text" placeholder="مثال: ایلان ماسک" className={`${styles.inputField} w-96 text-2xl name-element`} />
-        <button onClick={() => { /* Next step: 10 questions */ }} className={`${styles.button} w-96 name-element`}>ادامه</button>
-      </div>
-
     </main>
   );
 }
