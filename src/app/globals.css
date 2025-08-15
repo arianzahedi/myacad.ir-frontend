@@ -3,5 +3,12 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: var(--font-vazir), sans-serif; /* این خط فونت را به کل سایت اعمال می‌کند */
+  font-family: var(--font-vazir), sans-serif;
+}
+
+input,
+button,
+textarea,
+select {
+  font-family: inherit;
 }
