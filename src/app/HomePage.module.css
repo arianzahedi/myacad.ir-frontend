@@ -1,4 +1,4 @@
-/* src/app/HomePage.module.css - Simplified & Corrected */
+/* src/app/HomePage.module.css - Final Version */
 
 .container {
   position: relative;
@@ -13,7 +13,6 @@
   overflow: hidden;
 }
 
-/* This is a container for each step/view of the form */
 .viewContainer {
   position: absolute;
   top: 0;
@@ -27,34 +26,50 @@
   transition: opacity 0.5s ease-in-out;
 }
 
-.visible {
-  opacity: 1;
-  pointer-events: auto;
+.visible { opacity: 1; pointer-events: auto; }
+.hidden { opacity: 0; pointer-events: none; }
+
+/* Wrapper for the initial buttons to align them horizontally */
+.initialViewWrapper {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
 }
 
-.hidden {
-  opacity: 0;
-  pointer-events: none;
+.rectButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 12rem;
+  height: 12rem;
+  border: 2px solid #FFFFFF; /* Changed to white for better visibility */
+  border-radius: 12px;
+  cursor: pointer;
+  color: #D1D5DB;
+  transition: all 0.3s ease-in-out;
 }
 
-/* --- Navigation Buttons --- */
+.rectButton:hover {
+  border-color: #BF953F;
+  transform: translateY(-5px);
+  color: #BF953F;
+}
+
 .navButton {
   position: absolute;
   background: none;
   border: none;
   cursor: pointer;
   z-index: 10;
-  color: #9CA3AF; /* gray-400 */
+  color: #9CA3AF;
   transition: color 0.2s ease-in-out;
 }
-.navButton:hover {
-  color: #FFFFFF;
-}
-
+.navButton:hover { color: #FFFFFF; }
 .closeButton { top: 2rem; right: 2rem; }
 .backButton { top: 2rem; left: 2rem; display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; }
 
-/* --- Form and other elements --- */
 .form { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; text-align: center; }
 .title { font-size: 2.25rem; font-weight: 300; margin-bottom: 1rem; }
 .inputField { background: transparent; border: none; border-bottom: 2px solid #475569; text-align: center; font-size: 1.25rem; padding: 0.5rem; outline: none; transition: all 0.3s; width: 24rem; }

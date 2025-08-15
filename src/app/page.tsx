@@ -1,4 +1,4 @@
-// src/app/page.tsx - Simplified & Corrected
+// src/app/page.tsx - Final Version
 'use client';
 
 import { useState, useRef } from 'react';
@@ -15,7 +15,6 @@ export default function HomePage() {
   const containerRef = useRef(null);
 
   useGSAP(() => {
-    // Animate elements of the currently active view
     if (view !== 'initial') {
       gsap.fromTo(`.${styles.visible} > *`, 
         { opacity: 0, y: 20 }, 
@@ -33,9 +32,9 @@ export default function HomePage() {
   return (
     <main className={styles.container} ref={containerRef}>
       
-      {/* --- Initial View (Always in the background) --- */}
       <div className={`${styles.viewContainer} ${view === 'initial' ? styles.visible : styles.hidden}`}>
-        <div className="flex gap-12">
+        {/* This new wrapper div fixes the layout issue */}
+        <div className={styles.initialViewWrapper}>
           <div onClick={() => setView('signup')} className={styles.rectButton}>
             <FaUserPlus size={40} /> <span>ثبت‌نام</span>
           </div>
@@ -45,7 +44,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* --- Login View --- */}
       <div className={`${styles.viewContainer} ${view === 'login' ? styles.visible : styles.hidden}`}>
         <button onClick={() => setView('initial')} className={`${styles.navButton} ${styles.closeButton}`}><IoClose size={32} /></button>
         <div className={styles.form}>
@@ -56,7 +54,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* --- Signup View --- */}
       <div className={`${styles.viewContainer} ${view === 'signup' ? styles.visible : styles.hidden}`}>
          <button onClick={() => setView('initial')} className={`${styles.navButton} ${styles.closeButton}`}><IoClose size={32} /></button>
          <div className={styles.form}>
@@ -67,10 +64,10 @@ export default function HomePage() {
         </div>
       </div>
       
-      {/* --- Confirm Experience View --- */}
       <div className={`${styles.viewContainer} ${view === 'confirm_experience' ? styles.visible : styles.hidden}`}>
          <button onClick={() => setView('initial')} className={`${styles.navButton} ${styles.closeButton}`}><IoClose size={32} /></button>
-         <button onClick={() => setView(getPreviousView())} className={`${styles.navButton} ${styles.backButton}`}><IoArrowBack size={24} /> بازگشت</button>
+         {/* The text "بازگشت" is now removed from the back button */}
+         <button onClick={() => setView(getPreviousView())} className={`${styles.navButton} ${styles.backButton}`}><IoArrowBack size={24} /></button>
          <div className={styles.form}>
             <h2 className={styles.title}>آماده‌ای تا با هم یک تجربه جدید خلق کنیم؟</h2>
             <button onClick={() => setView('enter_name')} className={`${styles.button} w-auto px-8 flex items-center justify-center gap-3 text-2xl`}>
@@ -79,10 +76,9 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* --- Enter Name View --- */}
       <div className={`${styles.viewContainer} ${view === 'enter_name' ? styles.visible : styles.hidden}`}>
          <button onClick={() => setView('initial')} className={`${styles.navButton} ${styles.closeButton}`}><IoClose size={32} /></button>
-         <button onClick={() => setView(getPreviousView())} className={`${styles.navButton} ${styles.backButton}`}><IoArrowBack size={24} /> بازگشت</button>
+         <button onClick={() => setView(getPreviousView())} className={`${styles.navButton} ${styles.backButton}`}><IoArrowBack size={24} /></button>
          <div className={styles.form}>
             <h2 className={styles.title}>نام و نام خانوادگی خود را وارد کنید</h2>
             <input type="text" placeholder="مثال: ایلان ماسک" className={styles.inputField} />
