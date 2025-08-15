@@ -1,0 +1,112 @@
+/* src/app/HomePage.module.css */
+
+.container {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #0A192F; /* brand-navy */
+  color: #FFFFFF; /* brand-white */
+  padding: 2rem;
+  overflow: hidden;
+  font-family: var(--font-vazir), sans-serif;
+}
+
+.iconGroup {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.iconButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+}
+
+.iconButton div {
+  padding: 1.5rem;
+  border: 2px solid #FFFFFF;
+  border-radius: 9999px;
+  transition: border-color 0.3s;
+}
+
+.iconButton span {
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: #D1D5DB; /* gray-300 */
+  transition: color 0.3s;
+}
+
+.iconButton:hover div {
+  border-color: #AE926B; /* brand-gold */
+}
+
+.iconButton:hover span {
+  color: #AE926B; /* brand-gold */
+}
+
+.formContainer {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.title {
+  font-size: 28px; /* h2-lg */
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+.inputField {
+  width: 20rem; /* w-80 */
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #475569; /* brand-gray */
+  text-align: center;
+  font-size: 1.125rem;
+  padding: 0.5rem;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.inputField:focus {
+  border-color: #AE926B; /* brand-gold */
+  transform: scale(1.05);
+}
+
+.button {
+  width: 20rem; /* w-80 */
+  margin-top: 1rem;
+  color: #0A192F; /* brand-navy */
+  font-weight: bold;
+  padding: 0.75rem 1rem;
+  border-radius: 8px; /* ui-default */
+  background-color: #AE926B; /* brand-gold */
+  transition: all 0.3s ease-in-out;
+}
+
+.button:hover {
+  background-image: linear-gradient(to right, #FBBF24, #AE926B);
+  box-shadow: 0 10px 15px -3px rgba(251, 191, 36, 0.1), 0 4px 6px -2px rgba(251, 191, 36, 0.05);
+}
+
+.visible {
+  opacity: 1;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}

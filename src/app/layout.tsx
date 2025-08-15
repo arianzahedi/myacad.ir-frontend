@@ -1,12 +1,13 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
 import localFont from 'next/font/local';
-import "./globals.css";
+import "./globals.css"; // We need this to import our global styles
 
+// Define the custom font
 const vazirFont = localFont({
   src: '../../fonts/Vazirmatn[wght].woff2',
   display: 'swap',
-  variable: '--font-vazir'
+  variable: '--font-vazir' // This creates a CSS variable for our font
 });
 
 export const metadata: Metadata = {
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
   description: "Your new career path starts here",
 };
 
+// Define the RootLayout component which accepts 'children' as a prop
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -21,7 +23,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa" dir="rtl">
-      <body className={`${vazirFont.variable} font-sans`}>{children}</body>
+      {/* We apply the CSS variable to the body so all children can use it */}
+      <body className={vazirFont.variable}>
+        {children}
+      </body>
     </html>
   );
 }

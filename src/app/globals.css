@@ -1,2 +1,8 @@
-@import "tailwindcss/preflight";
-@tailwind utilities;
+/* src/app/globals.css */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* This line tells the entire app to use the Vazirmatn font */
+  font-family: var(--font-vazir), sans-serif;
+}
