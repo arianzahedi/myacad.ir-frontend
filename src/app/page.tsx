@@ -1,7 +1,8 @@
 // src/app/page.tsx
 'use client';
 
-import { useState, useRef, ReactNode } from 'react';
+// MutableRefObject را از React ایمپورت می‌کنیم
+import { useState, useRef, MutableRefObject } from 'react';
 import { FaLock, FaUserPlus, FaArrowRight } from 'react-icons/fa';
 import { IoClose, IoArrowBack } from 'react-icons/io5';
 import { gsap } from 'gsap';
@@ -13,20 +14,17 @@ type View = 'initial' | 'login' | 'signup' | 'confirm_experience' | 'enter_name'
 export default function HomePage() {
   const [view, setView] = useState<View>('initial');
   
-  // Refs for our initial buttons and the modal
   const signupButtonRef = useRef<HTMLDivElement>(null);
   const loginButtonRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const modalContentRef = useRef<HTMLDivElement>(null);
   
   useGSAP(() => {
-    // This is the animation logic
-    const animate = (originRef: React.RefObject<HTMLDivElement>) => {
+    // تغییر اصلی اینجاست: ما نوع صحیح و کامل را برای پارامتر مشخص می‌کنیم
+    const animate = (originRef: MutableRefObject<HTMLDivElement | null>) => { 
       if (!originRef.current || !modalRef.current || !modalContentRef.current) return;
       
       const originRect = originRef.current.getBoundingClientRect();
-      
-      // Animation timeline
       const tl = gsap.timeline();
       
       tl.set(modalRef.current, {
@@ -38,7 +36,7 @@ export default function HomePage() {
         })
         .to(modalRef.current, {
           duration: 0.7,
-          autoAlpha: 1, // Fades in and becomes visible
+          autoAlpha: 1,
           top: 0,
           left: 0,
           width: '100vw',
@@ -48,34 +46,35 @@ export default function HomePage() {
         })
         .to(modalContentRef.current, {
             duration: 0.5,
-            autoAlpha: 1, // Fade in the content AFTER the modal expands
-        }, "-=0.2"); // Start this animation 0.2s before the previous one ends
+            autoAlpha: 1,
+        }, "-=0.2");
     };
     
-    // Trigger animations based on view change
     if (view === 'signup') animate(signupButtonRef);
     if (view === 'login') animate(loginButtonRef);
 
   }, { dependencies: [view] });
 
   const handleClose = () => {
-    // Animation to close the modal
     gsap.to(modalContentRef.current, { duration: 0.3, autoAlpha: 0, ease: 'power2.in' });
     gsap.to(modalRef.current, { 
       duration: 0.5, 
       autoAlpha: 0, 
       ease: 'expo.in',
-      onComplete: () => setView('initial') // Set view to initial after animation completes
+      onComplete: () => setView('initial')
     });
   };
 
-  const getPreviousView = () => {
-    // ... same as before
+  const getPreviousView = (): View => {
+      if (view === 'enter_name') return 'confirm_experience';
+      if (view === 'confirm_experience') return 'signup';
+      if (view === 'login' || view === 'signup') return 'initial';
+      return 'initial';
   };
   
   return (
     <main className={styles.container}>
-      {/* --- Initial View --- */}
+      {/* بقیه کد JSX بدون تغییر باقی می‌ماند */}
       <div className={styles.initialView}>
         <div ref={signupButtonRef} onClick={() => setView('signup')} className={styles.rectButton}>
           <FaUserPlus size={40} />
@@ -86,23 +85,19 @@ export default function HomePage() {
           <span>ورود</span>
         </div>
       </div>
-      
-      {/* --- The Expanding Modal Container --- */}
       <div ref={modalRef} className={styles.modalContainer}>
-        {/* Close button is always visible inside the modal */}
-        <button onClick={handleClose} className={styles.closeButton}>
-          <IoClose size={32} />
-        </button>
-        {/* Back button is visible from the second step onwards */}
+        {view !== 'initial' && (
+            <button onClick={handleClose} className={styles.closeButton}>
+              <IoClose size={32} />
+            </button>
+        )}
         {(view === 'confirm_experience' || view === 'enter_name') && (
            <button onClick={() => setView(getPreviousView())} className={styles.backButton}>
             <IoArrowBack size={20} />
             <span>بازگشت</span>
           </button>
         )}
-
         <div ref={modalContentRef} className={styles.modalContent}>
-          {/* We render the content based on the 'view' state */}
           {view === 'signup' && (
             <div className="flex flex-col items-center gap-6">
               <h2 className={styles.title}>ایجاد حساب کاربری</h2>
@@ -111,9 +106,7 @@ export default function HomePage() {
               <button onClick={() => setView('confirm_experience')} className={styles.button}>ادامه</button>
             </div>
           )}
-          
-          {/* Add other views (login, confirm_experience, etc.) here in the same way */}
-          
+          {/* ... بقیه حالت‌های نمایش ... */}
         </div>
       </div>
     </main>
